@@ -380,7 +380,13 @@ function dragula (initialContainers, options) {
     _mirror.style.top = (/x/.test(o.axis) && _initialPos ? _initialPos : y) + 'px';
 
     var item = _copy || _item;
-    var elementBehindCursor = getElementBehindPoint(_mirror, clientX, clientY);
+
+    var boundingRect = _mirror.getBoundingClientRect();
+
+    var mirrorX = boundingRect.left + (boundingRect.width / 2);
+    var mirrorY = boundingRect.top + (boundingRect.height / 2);
+
+    var elementBehindCursor = getElementBehindPoint(_mirror, mirrorX, mirrorY);
     var dropTarget = findDropTarget(elementBehindCursor, clientX, clientY);
     var changed = dropTarget !== null && dropTarget !== _lastDropTarget;
     if (changed || dropTarget === null) {
