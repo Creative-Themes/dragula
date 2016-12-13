@@ -29,6 +29,7 @@ function dragula (initialContainers, options) {
 
   var o = options || {};
   if (o.axis === void 0) { o.axis = 'none'; }
+  if (o.shouldTreatCenterOfElementAsTarget === void 0) { o.shouldTreatCenterOfElementAsTarget = false; }
   if (o.moves === void 0) { o.moves = always; }
   if (o.accepts === void 0) { o.accepts = always; }
   if (o.invalid === void 0) { o.invalid = invalidTarget; }
@@ -386,7 +387,12 @@ function dragula (initialContainers, options) {
     var mirrorX = boundingRect.left + (boundingRect.width / 2);
     var mirrorY = boundingRect.top + (boundingRect.height / 2);
 
-    var elementBehindCursor = getElementBehindPoint(_mirror, mirrorX, mirrorY);
+    var elementBehindCursor = getElementBehindPoint(
+      _mirror,
+      o.shouldTreatCenterOfElementAsTarget ? mirrorX : clientX,
+      o.shouldTreatCenterOfElementAsTarget ? mirrorY : clientY
+    );
+
     var dropTarget = findDropTarget(elementBehindCursor, clientX, clientY);
     var changed = dropTarget !== null && dropTarget !== _lastDropTarget;
     if (changed || dropTarget === null) {
